@@ -1,11 +1,12 @@
-A React-based movie search application that fetches movies from the OMDB API, featuring responsive design, search functionality, pagination, and detailed movie pages.
+# React + Vite
 
-🚀 Live Demo: Your Deployment Link Here
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Features
-✅ Movie Search with type-ahead suggestions
-✅ Debounced API calls to optimize performance
-✅ Movie Details Page with enhanced UI & ratings display
-✅ Infinite Scroll / Pagination (only when searching)
-✅ Responsive Design (Desktop, Tablet, Mobile)
-✅ Material-UI Components for a modern look
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
