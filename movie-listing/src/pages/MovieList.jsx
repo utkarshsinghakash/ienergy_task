@@ -28,7 +28,6 @@ const MovieList = () => {
       if (!query) return;
 
       setLoading(true);
-      console.log(`Fetching movies for query: "${query}" (Page: ${page})`);
 
       const data = await fetchMovies(query, page);
       if (data?.Search) {

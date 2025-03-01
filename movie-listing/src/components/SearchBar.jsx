@@ -15,7 +15,6 @@ const SearchBar = () => {
     }
 
     const fetchData = async () => {
-      console.log(`Fetching search suggestions for: "${searchQuery}"`);
       const data = await fetchMovies(searchQuery);
       setSuggestions(data?.Search || []);
     };

@@ -30,7 +30,6 @@ const MovieDetail = () => {
       const data = await fetchMovieDetails(id);
       setMovie(data);
       setLoading(false);
-      console.log(data); // Debugging
     };
     getMovie();
   }, [id]);
