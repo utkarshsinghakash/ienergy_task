@@ -11,7 +11,6 @@ import {
   CardContent,
   CircularProgress,
   Rating,
-  Stack,
   Button,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -41,21 +40,22 @@ const MovieDetail = () => {
         justifyContent="center"
         alignItems="center"
         minHeight="100vh"
+        sx={{ backgroundColor: "#121212", color: "white" }}
       >
-        <CircularProgress />
+        <CircularProgress color="secondary" />
       </Box>
     );
   }
 
   if (!movie) {
     return (
-      <Typography variant="h5" textAlign="center">
+      <Typography variant="h5" textAlign="center" sx={{ color: "white" }}>
         Movie details not found.
       </Typography>
     );
   }
 
-  // Extract Ratings (IMDb, Rotten Tomatoes, Metacritic)
+  // Extract Ratings
   const imdbRating = parseFloat(movie.imdbRating) / 2; // Convert IMDb 10 scale to 5-star
   const rottenTomatoes =
     movie.Ratings.find((r) => r.Source === "Rotten Tomatoes")?.Value || "N/A";
@@ -63,149 +63,171 @@ const MovieDetail = () => {
     movie.Ratings.find((r) => r.Source === "Metacritic")?.Value || "N/A";
 
   return (
-    <Container
-      maxWidth="md"
+    <Box
       sx={{
-        padding: "40px 20px",
-        backgroundColor: "#f8f8f8",
-        borderRadius: "10px",
+        minHeight: "100vh",
+        background: `linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,1)), url(${movie.Poster})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        padding: "50px 0",
       }}
     >
-      {/* Back Button */}
-      <Button
-        startIcon={<ArrowBackIcon />}
-        onClick={() => navigate(-1)}
-        variant="contained"
-        sx={{
-          backgroundColor: "#333",
-          color: "white",
-          mb: 3,
-          "&:hover": { backgroundColor: "#555" },
-        }}
-      >
-        Back to Movies
-      </Button>
+      <Container maxWidth="md">
+        {/* Back Button */}
+        <Button
+          startIcon={<ArrowBackIcon />}
+          onClick={() => navigate(-1)}
+          variant="contained"
+          sx={{
+            backgroundColor: "rgba(255,255,255,0.2)",
+            color: "white",
+            mb: 3,
+            backdropFilter: "blur(10px)",
+            "&:hover": { backgroundColor: "rgba(255,255,255,0.4)" },
+          }}
+        >
+          Back to Movies
+        </Button>
 
-      {/* Movie Poster & Details */}
-      <Grid container spacing={4}>
-        {/* Movie Poster */}
-        <Grid item xs={12} sm={5}>
-          <Card sx={{ boxShadow: 3, borderRadius: "10px" }}>
-            <CardMedia component="img" image={movie.Poster} alt={movie.Title} />
-          </Card>
-        </Grid>
+        <Card
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            borderRadius: "15px",
+            background: "rgba(255, 255, 255, 0.15)",
+            backdropFilter: "blur(10px)",
+            padding: "20px",
+            boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.3)",
+            color: "white",
+          }}
+        >
+          {/* Movie Poster */}
+          <CardMedia
+            component="img"
+            image={movie.Poster}
+            alt={movie.Title}
+            sx={{
+              width: { xs: "100%", md: "40%" },
+              borderRadius: "10px",
+              objectFit: "cover",
+            }}
+          />
 
-        {/* Movie Information */}
-        <Grid item xs={12} sm={7}>
-          <Typography variant="h4" fontWeight="bold" gutterBottom>
-            {movie.Title} ({movie.Year})
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-            <LocalMoviesIcon sx={{ verticalAlign: "middle" }} /> {movie.Genre} |
-            🎭 {movie.Actors}
-          </Typography>
-          <Typography variant="body1" paragraph>
-            {movie.Plot}
-          </Typography>
-          <Typography variant="body2">
-            <strong>🎥 Director:</strong> {movie.Director}
-          </Typography>
-          <Typography variant="body2">
-            <strong>📝 Writer:</strong> {movie.Writer}
-          </Typography>
-          <Typography variant="body2">
-            <strong>🌍 Country:</strong> {movie.Country}
-          </Typography>
-          <Typography variant="body2">
-            <strong>📅 Released:</strong> {movie.Released} |{" "}
-            <strong>⏳ Runtime:</strong> {movie.Runtime}
-          </Typography>
-          <Typography variant="body2">
-            <strong>🏆 Awards:</strong> {movie.Awards}
-          </Typography>
-          <Typography variant="body2">
-            <strong>💵 Box Office:</strong> {movie.BoxOffice}
-          </Typography>
-        </Grid>
-      </Grid>
+          {/* Movie Details */}
+          <CardContent sx={{ paddingLeft: "20px", flex: 1 }}>
+            <Typography variant="h3" fontWeight="bold" gutterBottom>
+              {movie.Title} ({movie.Year})
+            </Typography>
+            <Typography variant="h6" color="rgba(255,255,255,0.8)" gutterBottom>
+              <LocalMoviesIcon sx={{ verticalAlign: "middle" }} /> {movie.Genre}{" "}
+              | 🎭 {movie.Actors}
+            </Typography>
+            <Typography variant="body1" paragraph sx={{ opacity: 0.9 }}>
+              {movie.Plot}
+            </Typography>
+            <Typography variant="body2">
+              <strong>🎥 Director:</strong> {movie.Director}
+            </Typography>
+            <Typography variant="body2">
+              <strong>📝 Writer:</strong> {movie.Writer}
+            </Typography>
+            <Typography variant="body2">
+              <strong>🌍 Country:</strong> {movie.Country}
+            </Typography>
+            <Typography variant="body2">
+              <strong>📅 Released:</strong> {movie.Released} | ⏳{" "}
+              {movie.Runtime}
+            </Typography>
+            <Typography variant="body2">
+              <strong>🏆 Awards:</strong> {movie.Awards}
+            </Typography>
+            <Typography variant="body2">
+              <strong>💵 Box Office:</strong> {movie.BoxOffice}
+            </Typography>
+          </CardContent>
+        </Card>
 
-      {/* Movie Ratings Section */}
-      <Box mt={4}>
-        <Typography variant="h5" fontWeight="bold" gutterBottom>
-          🎯 Ratings
-        </Typography>
-        <Grid container spacing={3}>
-          {/* IMDb Rating */}
-          <Grid item xs={12} sm={4}>
-            <Card
-              sx={{
-                boxShadow: 3,
-                borderRadius: "10px",
-                textAlign: "center",
-                padding: "20px",
-                backgroundColor: "#fff",
-              }}
-            >
-              <Typography variant="h6" fontWeight="bold">
-                IMDb Rating
-              </Typography>
-              <Rating
-                value={imdbRating}
-                precision={0.5}
-                readOnly
-                size="large"
-                sx={{ mt: 1 }}
-              />
-              <Typography variant="subtitle1">
-                <StarIcon sx={{ color: "#FFD700", verticalAlign: "middle" }} />{" "}
-                {movie.imdbRating} / 10
-              </Typography>
-              <Typography variant="caption">{movie.imdbVotes} votes</Typography>
-            </Card>
+        {/* Movie Ratings Section */}
+        <Box mt={4}>
+          <Typography variant="h4" fontWeight="bold" gutterBottom color="white">
+            🎯 Ratings
+          </Typography>
+          <Grid container spacing={3}>
+            {/* IMDb Rating */}
+            <Grid item xs={12} sm={4}>
+              <Card
+                sx={{
+                  boxShadow: 3,
+                  borderRadius: "10px",
+                  textAlign: "center",
+                  padding: "20px",
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  backdropFilter: "blur(10px)",
+                }}
+              >
+                <Typography variant="h6" fontWeight="bold">
+                  IMDb Rating
+                </Typography>
+                <Rating
+                  value={imdbRating}
+                  precision={0.5}
+                  readOnly
+                  size="large"
+                />
+                <Typography variant="subtitle1">
+                  <StarIcon
+                    sx={{ color: "#FFD700", verticalAlign: "middle" }}
+                  />{" "}
+                  {movie.imdbRating} / 10
+                </Typography>
+              </Card>
+            </Grid>
+
+            {/* Rotten Tomatoes */}
+            <Grid item xs={12} sm={4}>
+              <Card
+                sx={{
+                  boxShadow: 3,
+                  borderRadius: "10px",
+                  textAlign: "center",
+                  padding: "20px",
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  backdropFilter: "blur(10px)",
+                }}
+              >
+                <Typography variant="h6" fontWeight="bold">
+                  Rotten Tomatoes
+                </Typography>
+                <Typography variant="h5" color="error" fontWeight="bold">
+                  🍅 {rottenTomatoes}
+                </Typography>
+              </Card>
+            </Grid>
+
+            {/* Metacritic */}
+            <Grid item xs={12} sm={4}>
+              <Card
+                sx={{
+                  boxShadow: 3,
+                  borderRadius: "10px",
+                  textAlign: "center",
+                  padding: "20px",
+                  backgroundColor: "rgba(255,255,255,0.2)",
+                  backdropFilter: "blur(10px)",
+                }}
+              >
+                <Typography variant="h6" fontWeight="bold">
+                  Metacritic
+                </Typography>
+                <Typography variant="h5" fontWeight="bold">
+                  🎭 {metacritic}
+                </Typography>
+              </Card>
+            </Grid>
           </Grid>
-
-          {/* Rotten Tomatoes */}
-          <Grid item xs={12} sm={4}>
-            <Card
-              sx={{
-                boxShadow: 3,
-                borderRadius: "10px",
-                textAlign: "center",
-                padding: "20px",
-                backgroundColor: "#fff",
-              }}
-            >
-              <Typography variant="h6" fontWeight="bold">
-                Rotten Tomatoes
-              </Typography>
-              <Typography variant="h5" color="error" fontWeight="bold">
-                🍅 {rottenTomatoes}
-              </Typography>
-            </Card>
-          </Grid>
-
-          {/* Metacritic */}
-          <Grid item xs={12} sm={4}>
-            <Card
-              sx={{
-                boxShadow: 3,
-                borderRadius: "10px",
-                textAlign: "center",
-                padding: "20px",
-                backgroundColor: "#fff",
-              }}
-            >
-              <Typography variant="h6" fontWeight="bold">
-                Metacritic
-              </Typography>
-              <Typography variant="h5" fontWeight="bold">
-                🎭 {metacritic}
-              </Typography>
-            </Card>
-          </Grid>
-        </Grid>
-      </Box>
-    </Container>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 
